@@ -1,0 +1,13 @@
+1 arrives at 0.500
+Customer served; next service @ 1.500
+2 arrives at 0.600
+Customer leaves
+3 arrives at 0.700
+Customer leaves
+4 arrives at 1.500
+Customer served; next service @ 2.500
+5 arrives at 1.600
+Customer leaves
+6 arrives at 1.700
+Customer leaves
+Number of customers: 6
