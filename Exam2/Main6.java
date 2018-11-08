@@ -1,21 +1,20 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
-import java.util.*;
+import java.util.Collections;
 
 class Main {
     static Scanner sc = new Scanner(System.in);
     static ArrayList<Student> stu = new ArrayList<Student>();
     static ArrayList<Mark> mar = new ArrayList<Mark>();
-    static ArrayList<Integer> marks = new ArrayList<>();
+    static ArrayList<String> plab = new ArrayList<>();
+    static ArrayList<String> id = new ArrayList<>();
+    static ArrayList<Integer> group = new ArrayList<>();
     static ArrayList<String> mlab = new ArrayList<>();
+    static ArrayList<Integer> marks = new ArrayList<>();
+    static ArrayList<Student> abs = new ArrayList<>();
     
-    public static void main(String[] args) {
-        ArrayList<String> plab = new ArrayList<>();
-        ArrayList<String> id = new ArrayList<>();
-        ArrayList<Integer> group = new ArrayList<>();
-        ArrayList<Student> abs = new ArrayList<>();
-        
+    public static void read() {
         while (!sc.hasNext("end")) {
             plab.add(sc.next());
             id.add(sc.next());
@@ -24,9 +23,6 @@ class Main {
         for (int i = 0; i < group.size(); i++) {
             stu.add(new Student(plab.get(i), id.get(i), group.get(i)));
         }
-        Collections.sort(group);
-        int[] grp = group.stream().distinct().mapToInt(x -> x).sequential().toArray();
-        
         sc.next();
         while (!sc.hasNext("end")) {
             mlab.add(sc.next());
@@ -35,7 +31,11 @@ class Main {
         for (int i = 0; i < mlab.size(); i++) {
             mar.add(new Mark(mlab.get(i), marks.get(i)));
         }
-        
+    }
+    
+    public static int[] sortGrps() {
+        Collections.sort(group);
+        int[] grp = group.stream().distinct().mapToInt(x -> x).toArray();
         System.out.print("Groups(" + grp.length + "):[");
         for (int i = 0; i < grp.length; i++) {
             System.out.print(grp[i]);
@@ -59,6 +59,10 @@ class Main {
                 System.out.println(",0");
             }
         }
+        return grp;
+    }
+    
+    public static void absent() {
         System.out.println("List of absentees:");
         if (abs.size() > 0) {
             for (int i = 0; i < abs.size(); i++) {
@@ -67,9 +71,6 @@ class Main {
         } else {
             System.out.println("None");
         }
-        
-        mFreq(0);
-        grpFreq(grp);
     }
     
     public static void mFreq(int g) {
@@ -114,5 +115,13 @@ class Main {
                 mFreq(dg[n]);
             }
         }
+    }
+
+    public static void main(String[] args) {
+        read();
+        int[] distGrp = sortGrps();
+        absent();
+        mFreq(0);
+        grpFreq(distGrp);
     }
 }

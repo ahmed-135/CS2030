@@ -7,15 +7,16 @@ class Main {
     static Scanner sc = new Scanner(System.in);
     static ArrayList<Student> stu = new ArrayList<Student>();
     static ArrayList<Mark> mar = new ArrayList<Mark>();
-    static ArrayList<Integer> marks = new ArrayList<>();
-    static ArrayList<String> mlab = new ArrayList<>();
-    
+
     public static void main(String[] args) {
         ArrayList<String> plab = new ArrayList<>();
         ArrayList<String> id = new ArrayList<>();
         ArrayList<Integer> group = new ArrayList<>();
+        ArrayList<String> mlab = new ArrayList<>();
+        ArrayList<Integer> marks = new ArrayList<>();
         ArrayList<Student> abs = new ArrayList<>();
-        
+        int b = 0;
+
         while (!sc.hasNext("end")) {
             plab.add(sc.next());
             id.add(sc.next());
@@ -28,12 +29,16 @@ class Main {
         int[] grp = group.stream().distinct().mapToInt(x -> x).sequential().toArray();
         
         sc.next();
+        //plab.clear();
         while (!sc.hasNext("end")) {
             mlab.add(sc.next());
             marks.add(sc.nextInt());
         }
         for (int i = 0; i < mlab.size(); i++) {
             mar.add(new Mark(mlab.get(i), marks.get(i)));
+            /*for (int x = 0; x < stu.size(); x++) {
+                if (plab.get(i).getPlab() ==
+            }*/
         }
         
         System.out.print("Groups(" + grp.length + "):[");
@@ -60,59 +65,34 @@ class Main {
             }
         }
         System.out.println("List of absentees:");
+        //boolean at = false;
         if (abs.size() > 0) {
             for (int i = 0; i < abs.size(); i++) {
+                //at = true;
                 System.out.println(abs.get(i));
             }
         } else {
             System.out.println("None");
         }
-        
-        mFreq(0);
-        grpFreq(grp);
-    }
-    
-    public static void mFreq(int g) {
+
         int[] freq = new int[2];
+        /*if (at) {
+            freq[0] = marks.stream().mapToInt(x -> x).min().getAsInt();
+        } else {
+            freq[0] = 0;
+        }*/
         freq[0] = marks.stream().mapToInt(x -> x).min().getAsInt();
         freq[1] = marks.stream().mapToInt(x -> x).max().getAsInt();
-        int a = (int) IntStream.rangeClosed(freq[0], freq[1]).count();
+        long a = IntStream.rangeClosed(freq[0], freq[1]).count();
         System.out.println("Mark frequency from " + freq[0] + " to " + freq[1]);
-        int b = 0;
-        for (int i = freq[0]; i < (freq[0] + a); i++) {
+        for (int i = freq[0]; i < a; i++) {
             b = 0;
             for (int y = 0; y < marks.size(); y++) {
-                if (marks.get(y) == i && g == 0) {
+                if (marks.get(i) == i) {
                     b++;
-                } else if (marks.get(y) == i && g != 0) {
-                    for (int x = 0; x < stu.size(); x++) {
-                        Student s = stu.get(x);
-                        if (mlab.get(y).equals(s.getPlab()) && s.getGroup() == g) {
-                            b++;
-                        }
-                    }
                 }
             }
-            System.out.println(i + " : " + b);
-        }
-    }
-    
-    public static void grpFreq(int[] dg) {
-        for (int n = 0; n < dg.length; n++) {
-            boolean t = false;
-            for (int i = 0; i < stu.size(); i++) {
-                for (int x = 0; x < mar.size(); x++) {
-                    if (mar.get(x).getPlab().equals(stu.get(i).getPlab())
-                        && stu.get(i).getGroup() == dg[n]) {
-                        t = true;
-                        break;
-                    }
-                }
-            }
-            if (t) {
-                System.out.print("Group #" + dg[n] + "...");
-                mFreq(dg[n]);
-            }
+            System.out.println(i + " : " + b;//marks.stream().mapToInt(x -> x).filter(x -> x == b).count());
         }
     }
 }
